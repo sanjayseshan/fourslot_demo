@@ -16,8 +16,8 @@ struct pipe_id {
 
 // sample payload type
 struct key_value {
-  uint8_t key;
-  uint8_t value;
+  int key;
+  int value;
 };
 
 // IOpipe type
@@ -25,9 +25,10 @@ struct packet_data{
   uint8_t dest_addr; // the first 8 bits of the IOpipe type is used for destination by the NoC
   uint8_t src_addr;
   uint8_t user;
+  uint8_t byte_pad;
   key_value payload;
+  int pad[30];
 };
-
 using write_iopipe = ext::intel::kernel_writeable_io_pipe<pipe_id<0>, packet_data, 0>;
 using read_iopipe = ext::intel::kernel_readable_io_pipe<pipe_id<1>, packet_data, 0>;
 
@@ -47,8 +48,8 @@ extern "C" {
 
         for (size_t i = 0; i < num_items; i++) {
           read_packet = read_iopipe::read();
-          write_packet.payload.key = read_packet.payload.key + 1;
-          write_packet.payload.value = read_packet.payload.value + 1;
+          write_packet.payload.key = read_packet.payload.key;
+          write_packet.payload.value = read_packet.payload.value + 2;
 
           write_iopipe::write(write_packet);
         }

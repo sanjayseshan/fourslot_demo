@@ -1,0 +1,5 @@
+*.so
+*.prj
+logs/*
+main
+main_sim

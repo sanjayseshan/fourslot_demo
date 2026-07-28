@@ -75,18 +75,18 @@ int main() {
   // dynamic loading flow for splitting kernels across homogeneous fpgas
   // .so wrap bitstream files
   void* slot0_lib = nullptr;
-  auto slot0_kernel = load_slot0_kernel("slot0/fourslot_iopipes_stream.so", "slot0_fourslot_iopipes_stream", &slot0_lib);
+  auto slot0_kernel = load_slot0_kernel("slot0/fourslot_iopipes_stream_sim.so", "slot0_fourslot_iopipes_stream", &slot0_lib);
 
   void* slot0b_lib = nullptr;
-  auto slot0b_kernel = load_slot0_kernel("slot0b/fourslot_iopipes_stream.so", "slot0b_fourslot_iopipes_stream", &slot0b_lib);
+  auto slot0b_kernel = load_slot0_kernel("slot0b/fourslot_iopipes_stream_sim.so", "slot0b_fourslot_iopipes_stream", &slot0b_lib);
 
-  auto slot1_lib = dlopen("slot1/fourslot_iopipes_stream.so", RTLD_NOW);
+  auto slot1_lib = dlopen("slot1/fourslot_iopipes_stream_sim.so", RTLD_NOW);
   auto slot1_kernel = (event (*)(queue&, size_t, uint8_t))dlsym(slot1_lib, "slot1_fourslot_iopipes_stream");
 
-  auto slot2_sink_lib = dlopen("slot2/fourslot_iopipes_sink.so", RTLD_NOW);
+  auto slot2_sink_lib = dlopen("slot2/fourslot_iopipes_sink_sim.so", RTLD_NOW);
   auto slot2_sink     = (event (*)(queue&, buffer<key_value>&, size_t))dlsym(slot2_sink_lib, "slot2_fourslot_iopipes_sink");
 
-  auto slot3_src_lib = dlopen("slot3/fourslot_iopipes_src.so", RTLD_NOW);
+  auto slot3_src_lib = dlopen("slot3/fourslot_iopipes_src_sim.so", RTLD_NOW);
   auto slot3_src     =  (event (*)(queue&, buffer<key_value>&, size_t, uint8_t))dlsym(slot3_src_lib, "slot3_fourslot_iopipes_src");
 
   // number of packets 
